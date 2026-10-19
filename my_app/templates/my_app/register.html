@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account | Glow Beauty</title>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+<body class="auth-page">
+    <main class="auth-card auth-card-register">
+        <a class="auth-brand" href="{% url 'login' %}">
+            <span class="auth-brand-mark">G</span>
+            <span>GLOW <small>BEAUTY INVENTORY</small></span>
+        </a>
+        <div class="auth-eyebrow">A LOVELY PLACE TO BEGIN</div>
+        <h1>Create your account</h1>
+        <p class="auth-intro">Set up your studio and make inventory feel effortless.</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="auth-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<small class="field-help">{{ field.help_text|safe }}</small>{% endif %}
+                    {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                </div>
+            {% endfor %}
+            {% if form.non_field_errors %}
+                <div class="form-error" role="alert">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <button class="auth-submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+        <p class="auth-footnote">Your next chapter starts with a little glow.</p>
+    </main>
+</body>
+</html>

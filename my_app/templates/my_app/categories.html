@@ -1,0 +1,199 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Categories | Beauty Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fdf7fb;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #d86ba8, #9b59b6);
+            padding: 25px 15px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .sidebar-nav span {
+            width: 25px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+        }
+
+        h1 {
+            color: #7d3c98;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .category {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .category-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .category h3 {
+            color: #6c3483;
+            margin-bottom: 8px;
+        }
+
+        .category p {
+            color: #888;
+        }
+
+        @media(max-width: 900px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div class="logo">✨ Beauty Admin</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span>⌂</span> Dashboard
+            </a>
+
+            <a href="{% url 'product_list' %}">
+                <span>👜</span> Products
+            </a>
+
+            <a href="{% url 'orders' %}">
+                <span>▣</span> Orders
+            </a>
+
+            <a href="{% url 'customers' %}">
+                <span>♙</span> Customers
+            </a>
+
+            <a href="{% url 'categories' %}" class="active">
+                <span>▦</span> Categories
+            </a>
+
+            <a href="{% url 'reports' %}">
+                <span>▥</span> Reports
+            </a>
+
+            <a href="{% url 'settings' %}">
+                <span>⚙</span> Settings
+            </a>
+
+        </nav>
+
+        <form class="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+        </form>
+    </aside>
+
+    <main class="main">
+
+        <h1>Categories</h1>
+        <p class="subtitle">Organize your beauty products by category.</p>
+
+        <div class="category-grid">
+
+            <div class="category">
+                <div class="category-icon">💄</div>
+                <h3>Lip Products</h3>
+                <p>12 Products</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">✨</div>
+                <h3>Face Makeup</h3>
+                <p>15 Products</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">👁️</div>
+                <h3>Eye Makeup</h3>
+                <p>10 Products</p>
+            </div>
+
+            <div class="category">
+                <div class="category-icon">🧴</div>
+                <h3>Skincare</h3>
+                <p>8 Products</p>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

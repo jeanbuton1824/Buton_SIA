@@ -1,0 +1,877 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Glow Beauty - Products</title>
+
+    <link rel="stylesheet" href="{% static 'my_app/style.css' %}">
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-main">Glow</div>
+        <div class="logo-sub">BEAUTY</div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="{% url 'dashboard' %}">
+            <span>⌂</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'product_list' %}" class="active">
+            <span>👜</span>
+            Products
+        </a>
+
+        <a href="{% url 'orders' %}">
+            <span>▣</span>
+            Orders
+        </a>
+
+        <a href="{% url 'customers' %}">
+            <span>♙</span>
+            Customers
+        </a>
+
+        <a href="{% url 'categories' %}">
+            <span>▦</span>
+            Categories
+        </a>
+
+        <a href="{% url 'reports' %}">
+            <span>▥</span>
+            Reports
+        </a>
+
+        <a href="{% url 'settings' %}">
+            <span>⚙</span>
+            Settings
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+        <p>
+            Glow with<br>
+            confidence.<br>
+            ♡
+        </p>
+    </div>
+
+    <form class="logout-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+    </form>
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div class="search-box">
+            <span>⌕</span>
+
+            <input
+                type="text"
+                placeholder="Search products, orders, or customers..."
+            >
+        </div>
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                👩🏻
+            </div>
+
+            <div>
+                <div class="profile-name">
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </div>
+
+                <div class="profile-role">
+                    Account
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <section class="content">
+
+        <!-- PAGE HEADER -->
+
+        <div class="products-header">
+
+            <div>
+
+                <div class="page-small-title">
+                    BEAUTY INVENTORY
+                </div>
+
+                <h1>
+                    Products
+                </h1>
+
+                <p class="page-description">
+                    Manage your product inventory
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'product_add' %}"
+                class="add-product-button"
+            >
+                ＋ Add Product
+            </a>
+
+        </div>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <div class="stats">
+
+            <!-- TOTAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👜
+                </div>
+
+                <div class="stat-title">
+                    Total Products
+                </div>
+
+                <div class="stat-number">
+                    {{ total_products|default:"0" }}
+                </div>
+
+                <div class="stat-change">
+                    In your inventory
+                </div>
+
+            </div>
+
+
+            <!-- IN STOCK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+                <div class="stat-title">
+                    In Stock
+                </div>
+
+                <div class="stat-number">
+                    {{ in_stock_count|default:"0" }}
+                </div>
+
+                <div class="stat-change">
+                    Products available
+                </div>
+
+            </div>
+
+
+            <!-- LOW STOCK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚠
+                </div>
+
+                <div class="stat-title">
+                    Low Stock
+                </div>
+
+                <div class="stat-number">
+                    {{ low_stock_count|default:"0" }}
+                </div>
+
+                <div class="stat-change">
+                    Need attention
+                </div>
+
+            </div>
+
+
+            <!-- OUT OF STOCK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ×
+                </div>
+
+                <div class="stat-title">
+                    Out of Stock
+                </div>
+
+                <div class="stat-number">
+                    {{ out_of_stock_count|default:"0" }}
+                </div>
+
+                <div class="stat-change">
+                    Currently unavailable
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT AREA ================= -->
+
+        <div class="product-page-layout">
+
+            <!-- PRODUCT TABLE -->
+
+            <div class="panel">
+
+                <div class="panel-title">
+
+                    <h2>
+                        Product Inventory
+                    </h2>
+
+                    <a
+                        href="{% url 'product_add' %}"
+                        class="view-all"
+                    >
+                        + Add Product
+                    </a>
+
+                </div>
+
+
+                <!-- SEARCH AND FILTER -->
+
+                <div class="product-filter">
+
+                    <div class="product-search">
+                        <span>⌕</span>
+
+                        <input
+                            type="text"
+                            id="productSearch"
+                            placeholder="Search products..."
+                        >
+                    </div>
+
+
+                    <select id="categoryFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="lips">
+                            Lips
+                        </option>
+
+                        <option value="face">
+                            Face
+                        </option>
+
+                        <option value="eyes">
+                            Eyes
+                        </option>
+
+                    </select>
+
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Status
+                        </option>
+
+                        <option value="in stock">
+                            In Stock
+                        </option>
+
+                        <option value="low stock">
+                            Low Stock
+                        </option>
+
+                        <option value="out of stock">
+                            Out of Stock
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="table-wrapper">
+
+                    <table id="productTable">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    <input type="checkbox">
+                                </th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Stock
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for product in products %}
+
+                            <tr>
+
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+
+
+                                <!-- PRODUCT -->
+
+                                <td>
+
+                                    <div class="product-cell">
+                                        {% if product.image %}
+                                            <img
+                                                class="product-thumb"
+                                                src="{{ product.image.url }}"
+                                                alt="{{ product.name }}"
+                                                loading="lazy"
+                                            >
+                                        {% else %}
+                                            <div class="product-thumb product-thumb-placeholder" aria-hidden="true">
+                                                {% if "lip" in product.category|lower %}💄
+                                                {% elif "foundation" in product.category|lower %}🧴
+                                                {% elif "mascara" in product.category|lower %}🖤
+                                                {% elif "eye" in product.category|lower %}🎨
+                                                {% elif "blush" in product.category|lower %}🌸
+                                                {% else %}💗{% endif %}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="product-info">
+                                            <strong>
+                                                {{ product.name }}
+                                            </strong>
+
+                                            <small>
+                                                SKU: {{ product.sku }}
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                </td>
+
+
+                                <!-- CATEGORY -->
+
+                                <td>
+
+                                    <span class="category-pill">
+                                        {{ product.category }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- PRICE -->
+
+                                <td>
+
+                                    <strong>
+                                        ₱{{ product.price }}
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- STOCK -->
+
+                                <td>
+
+                                    {{ product.stock_quantity }}
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    {% if product.stock_quantity == 0 %}
+
+                                        <span class="status out">
+                                            Out of Stock
+                                        </span>
+
+                                    {% elif product.stock_quantity <= 5 %}
+
+                                        <span class="status low">
+                                            Low Stock
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status in">
+                                            In Stock
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        <a
+                                            href="{% url 'product_edit' product.product_id %}"
+                                            class="edit-button"
+                                            title="Edit"
+                                        >
+                                            ✎
+                                        </a>
+
+                                        <a
+                                            href="{% url 'product_delete' product.product_id %}"
+                                            class="delete-button"
+                                            title="Delete"
+                                        >
+                                            🗑
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="7"
+                                    class="empty-table"
+                                >
+
+                                    <div>
+                                        💄
+                                    </div>
+
+                                    <h3>
+                                        No products yet
+                                    </h3>
+
+                                    <p>
+                                        Add your first Glow Beauty product.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'product_add' %}"
+                                        class="add-product-button"
+                                    >
+                                        ＋ Add Product
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="table-footer">
+
+                    <span>
+                        Showing {{ products|length }} product(s)
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RIGHT SIDE ================= -->
+
+            <aside class="product-side-panel">
+
+                <!-- BEAUTY PROMO -->
+
+                <div class="panel beauty-promo">
+
+                    <div class="promo-image">
+                        💄 🧴 🎨
+                    </div>
+
+                    <h2>
+                        Glow Beauty
+                    </h2>
+
+                    <p>
+                        Quality beauty products
+                        for your everyday glow.
+                    </p>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel">
+
+                    <div class="panel-title">
+                        <h2>
+                            Quick Actions
+                        </h2>
+                    </div>
+
+
+                    <a
+                        href="{% url 'product_add' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            ＋
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Add New Product
+                            </strong>
+
+                            <small>
+                                Create a new product
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'categories' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            ◇
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Manage Categories
+                            </strong>
+
+                            <small>
+                                Organize your products
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            ⚠
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                View Low Stock
+                            </strong>
+
+                            <small>
+                                Check items running low
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            ×
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                View Out of Stock
+                            </strong>
+
+                            <small>
+                                Products not available
+                            </small>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                <!-- RECENT ACTIVITY -->
+
+                <div class="panel">
+
+                    <div class="panel-title">
+
+                        <h2>
+                            Recent Activity
+                        </h2>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <div class="activity-image">
+                            💄
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                New product added
+                            </strong>
+
+                            <p>
+                                Lip Gloss
+                            </p>
+
+                            <small>
+                                Sep 23, 2026 · 10:24 AM
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <div class="activity-image">
+                            💄
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Stock updated
+                            </strong>
+
+                            <p>
+                                Matte Lipstick
+                            </p>
+
+                            <small>
+                                Sep 23, 2026 · 09:12 AM
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity">
+
+                        <div class="activity-image">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Product deleted
+                            </strong>
+
+                            <p>
+                                Old Beauty Set
+                            </p>
+
+                            <small>
+                                Sep 22, 2026 · 04:32 PM
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+const searchInput =
+    document.getElementById("productSearch");
+
+const categoryFilter =
+    document.getElementById("categoryFilter");
+
+const statusFilter =
+    document.getElementById("statusFilter");
+
+const rows =
+    document.querySelectorAll("#productTable tbody tr");
+
+
+function filterProducts() {
+
+    const search =
+        searchInput.value.toLowerCase();
+
+    const category =
+        categoryFilter.value.toLowerCase();
+
+    const status =
+        statusFilter.value.toLowerCase();
+
+
+    rows.forEach(row => {
+
+        const text =
+            row.innerText.toLowerCase();
+
+        let show = true;
+
+
+        if (search && !text.includes(search)) {
+            show = false;
+        }
+
+
+        if (category && !text.includes(category)) {
+            show = false;
+        }
+
+
+        if (status && !text.includes(status)) {
+            show = false;
+        }
+
+
+        row.style.display =
+            show ? "" : "none";
+
+    });
+
+}
+
+
+searchInput.addEventListener(
+    "keyup",
+    filterProducts
+);
+
+
+categoryFilter.addEventListener(
+    "change",
+    filterProducts
+);
+
+
+statusFilter.addEventListener(
+    "change",
+    filterProducts
+);
+
+</script>
+
+
+</body>
+</html>

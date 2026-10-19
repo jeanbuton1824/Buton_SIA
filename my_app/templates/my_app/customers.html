@@ -1,0 +1,216 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers | Beauty Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fdf7fb;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #d86ba8, #9b59b6);
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .sidebar-nav span {
+            width: 25px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+        }
+
+        h1 {
+            color: #7d3c98;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .customer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .customer-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #f2d7e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .customer-card h3 {
+            color: #6c3483;
+            margin-bottom: 8px;
+        }
+
+        .customer-card p {
+            color: #777;
+            margin: 5px 0;
+        }
+
+        .orders-count {
+            margin-top: 15px;
+            color: #d86ba8;
+            font-weight: bold;
+        }
+
+        @media(max-width: 900px) {
+            .customer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                width: 190px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div class="logo">✨ Beauty Admin</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span>⌂</span> Dashboard
+            </a>
+
+            <a href="{% url 'product_list' %}">
+                <span>👜</span> Products
+            </a>
+
+            <a href="{% url 'orders' %}">
+                <span>▣</span> Orders
+            </a>
+
+            <a href="{% url 'customers' %}" class="active">
+                <span>♙</span> Customers
+            </a>
+
+            <a href="{% url 'categories' %}">
+                <span>▦</span> Categories
+            </a>
+
+            <a href="{% url 'reports' %}">
+                <span>▥</span> Reports
+            </a>
+
+            <a href="{% url 'settings' %}">
+                <span>⚙</span> Settings
+            </a>
+
+        </nav>
+
+        <form class="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+        </form>
+    </aside>
+
+    <main class="main">
+
+        <h1>Customers</h1>
+        <p class="subtitle">View and manage your beauty store customers.</p>
+
+        <div class="customer-grid">
+
+            <div class="customer-card">
+                <div class="avatar">👩</div>
+                <h3>Maria Santos</h3>
+                <p>Email: maria@email.com</p>
+                <p>Phone: 0912-345-6789</p>
+                <div class="orders-count">5 Orders</div>
+            </div>
+
+            <div class="customer-card">
+                <div class="avatar">👩</div>
+                <h3>Angela Cruz</h3>
+                <p>Email: angela@email.com</p>
+                <p>Phone: 0917-555-1234</p>
+                <div class="orders-count">3 Orders</div>
+            </div>
+
+            <div class="customer-card">
+                <div class="avatar">👩</div>
+                <h3>Sofia Reyes</h3>
+                <p>Email: sofia@email.com</p>
+                <p>Phone: 0920-444-5678</p>
+                <div class="orders-count">7 Orders</div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

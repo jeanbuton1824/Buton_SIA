@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fbf8f3">
+  <meta name="description" content="Sign in to your GLOW BEAUTY account and keep your favorite beauty finds close.">
+  <title>Sign in | GLOW BEAUTY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body class="beauty-store login-page" data-page="login">
+  <header class="site-header login-header">
+    <div class="header-inner container">
+      <a class="brand" href="index.html" aria-label="GLOW BEAUTY home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>GLOW <b>BEAUTY</b><small>GLOW WITH CONFIDENCE</small></span>
+      </a>
+      <a class="login-back-link" href="shop.html"><span aria-hidden="true">←</span> Back to the beauty edit</a>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <div class="login-layout">
+      <aside class="login-visual" aria-label="GLOW BEAUTY">
+        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&amp;fit=crop&amp;w=1200&amp;q=88" alt="A colorful eyeshadow palette for a playful beauty look" fetchpriority="high">
+        <div class="login-visual-shade"></div>
+        <span class="login-visual-mark" aria-hidden="true">✳</span>
+        <div class="login-visual-copy">
+          <p>YOUR EVERYDAY BEAUTY EDIT</p>
+          <h1>A little ritual.<br>A lot more <span>you.</span></h1>
+          <div class="login-visual-note"><span aria-hidden="true">✦</span> Find your glow, right where you left it.</div>
+        </div>
+        <span class="login-visual-index" aria-hidden="true">GLOW BEAUTY <i></i> 01 / 01</span>
+      </aside>
+
+      <section class="login-content" aria-labelledby="login-title">
+        <div class="login-form-wrap">
+          <p class="eyebrow"><span class="eyebrow-line"></span> WELCOME BACK</p>
+          <h2 id="login-title">Good to see <span class="gradient-text">you.</span></h2>
+          <p class="login-intro">Sign in to keep your little beauty favorites close.</p>
+
+          <form class="auth-form login-form" id="signin-form" data-redirect-on-success novalidate>
+            <div class="field-group">
+              <label for="signin-email">Email address</label>
+              <input id="signin-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <div class="field-group">
+              <div class="label-row">
+                <label for="signin-password">Password</label>
+                <a href="#forgot-password" id="forgot-password">Forgot password?</a>
+              </div>
+              <div class="password-wrap">
+                <input id="signin-password" name="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+                <button class="password-toggle" type="button" data-toggle-password="signin-password" aria-label="Show password">Show</button>
+              </div>
+            </div>
+            <label class="check-row"><input type="checkbox" name="remember"><span>Remember me on this device</span></label>
+            <p class="form-feedback" aria-live="polite"></p>
+            <button class="button button-primary form-submit" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+          </form>
+
+          <p class="switch-auth">New around here? <a href="index.html?auth=signup">Create an account</a></p>
+          <p class="demo-security"><b>Demo authentication only.</b> Accounts are stored in this browser and are not secure. Don’t use a real password.</p>
+        </div>
+        <a class="login-home-link" href="index.html">← Return to GLOW BEAUTY</a>
+      </section>
+    </div>
+  </main>
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

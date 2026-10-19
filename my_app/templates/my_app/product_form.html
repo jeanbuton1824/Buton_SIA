@@ -1,0 +1,385 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if product %}
+            Edit Product
+        {% else %}
+            Add Product
+        {% endif %}
+        - Glow Beauty
+    </title>
+
+    <link rel="stylesheet" href="{% static 'my_app/style.css' %}">
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-main">Glow</div>
+        <div class="logo-sub">BEAUTY</div>
+    </div>
+
+    <ul class="nav-menu">
+
+        <li>
+            <a href="{% url 'dashboard' %}">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'product_list' %}" class="active">
+                <span class="nav-icon">👜</span>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'orders' %}">
+                <span class="nav-icon">▣</span>
+                <span>Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'customers' %}">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'categories' %}">
+            <span class="nav-icon">▦</span>
+            <span>Categories</span>
+        </a>
+    </li>
+
+       <li>
+        <a href="{% url 'reports' %}">
+            <span class="nav-icon">▥</span>
+            <span>Reports</span>
+        </a>
+    </li>
+
+        <li>
+        <a href="{% url 'settings' %}">
+            <span class="nav-icon">⚙</span>
+            <span>Settings</span>
+        </a>
+    </li>
+
+</ul>
+
+    <div class="sidebar-bottom">
+        <p>
+            Glow with<br>
+            confidence.
+        </p>
+    </div>
+
+    <form class="logout-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+    </form>
+</aside>
+
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <div class="search-box">
+            <span>⌕</span>
+
+            <input
+                type="text"
+                placeholder="Search products, orders, or customers..."
+            >
+        </div>
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                👩🏻
+            </div>
+
+            <div>
+                <div class="profile-name">
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </div>
+
+                <div class="profile-role">
+                    Account
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+    <section class="content">
+
+        <div class="welcome">
+
+            <h4>Glow Beauty</h4>
+
+            <h1>
+                {% if product %}
+                    Edit Product
+                {% else %}
+                    Add New Product
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if product %}
+                    Update your product information below.
+                {% else %}
+                    Add a new beauty product to your inventory.
+                {% endif %}
+            </p>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+        <div class="panel product-form-panel">
+
+            <div class="panel-title">
+
+                <h2>Product Information</h2>
+
+            </div>
+
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <!-- GENERAL FORM ERRORS -->
+                {% if form.non_field_errors %}
+
+                    <div class="form-error">
+
+                        {{ form.non_field_errors }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- PRODUCT NAME -->
+                <div class="form-group">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Product Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        <div class="field-error">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SKU -->
+                <div class="form-group">
+
+                    <label for="{{ form.sku.id_for_label }}">
+                        SKU
+                    </label>
+
+                    {{ form.sku }}
+
+                    {% if form.sku.errors %}
+                        <div class="field-error">
+                            {{ form.sku.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRICE -->
+                <div class="form-group">
+
+                    <label for="{{ form.price.id_for_label }}">
+                        Price
+                    </label>
+
+                    {{ form.price }}
+
+                    {% if form.price.errors %}
+                        <div class="field-error">
+                            {{ form.price.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SUPPLIER -->
+                <div class="form-group">
+
+                    <label for="{{ form.supplier.id_for_label }}">
+                        Supplier
+                    </label>
+
+                    {{ form.supplier }}
+
+                    {% if form.supplier.errors %}
+                        <div class="field-error">
+                            {{ form.supplier.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- CATEGORY -->
+                <div class="form-group">
+
+                    <label for="{{ form.category.id_for_label }}">
+                        Category
+                    </label>
+
+                    {{ form.category }}
+
+                    {% if form.category.errors %}
+                        <div class="field-error">
+                            {{ form.category.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- BRAND -->
+                <div class="form-group">
+
+                    <label for="{{ form.brand.id_for_label }}">
+                        Brand
+                    </label>
+
+                    {{ form.brand }}
+
+                    {% if form.brand.errors %}
+                        <div class="field-error">
+                            {{ form.brand.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- STOCK QUANTITY -->
+                <div class="form-group">
+
+                    <label for="{{ form.stock_quantity.id_for_label }}">
+                        Stock Quantity
+                    </label>
+
+                    {{ form.stock_quantity }}
+
+                    {% if form.stock_quantity.errors %}
+                        <div class="field-error">
+                            {{ form.stock_quantity.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+                <div class="form-group">
+
+                    <label for="{{ form.description.id_for_label }}">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+                        <div class="field-error">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- PRODUCT PHOTO -->
+                <div class="form-group product-photo-field">
+                    <label for="{{ form.image.id_for_label }}">Product Photo</label>
+                    {% if product.image %}
+                        <div class="current-product-photo">
+                            <img src="{{ product.image.url }}" alt="Current photo of {{ product.name }}">
+                            <span>Current photo · choose a new image to replace it</span>
+                        </div>
+                    {% else %}
+                        <p class="photo-help">Upload a clear photo so you can recognize this product at a glance.</p>
+                    {% endif %}
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                        <div class="field-error">{{ form.image.errors }}</div>
+                    {% endif %}
+                    <small class="photo-help">Choose a JPG, PNG, GIF, or WebP image.</small>
+                </div>
+
+
+                <!-- BUTTONS -->
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="shop-button">
+
+                        {% if product %}
+                            Update Product
+                        {% else %}
+                            Save Product
+                        {% endif %}
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'product_list' %}"
+                        class="cancel-button">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

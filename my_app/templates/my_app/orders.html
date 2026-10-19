@@ -1,0 +1,239 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders | Beauty Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fdf7fb;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #d86ba8, #9b59b6);
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .sidebar-nav span {
+            width: 25px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            color: #7d3c98;
+        }
+
+        .header p {
+            color: #777;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f7e5f2;
+            color: #6c3483;
+            text-align: left;
+            padding: 15px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            background: #e8f8f5;
+            color: #148f77;
+        }
+
+        .btn {
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: #d86ba8;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            ✨ Beauty Admin
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="{% url 'product_list' %}">
+                <span>👜</span>
+                Products
+            </a>
+
+            <a href="{% url 'orders' %}" class="active">
+                <span>▣</span>
+                Orders
+            </a>
+
+            <a href="{% url 'customers' %}">
+                <span>♙</span>
+                Customers
+            </a>
+
+            <a href="{% url 'categories' %}">
+                <span>▦</span>
+                Categories
+            </a>
+
+            <a href="{% url 'reports' %}">
+                <span>▥</span>
+                Reports
+            </a>
+
+            <a href="{% url 'settings' %}">
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <form class="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+        </form>
+    </aside>
+
+    <main class="main">
+
+        <div class="header">
+            <h1>Orders</h1>
+            <p>Manage and monitor customer orders.</p>
+        </div>
+
+        <div class="card">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>#ORD-001</td>
+                        <td>Maria Santos</td>
+                        <td>Matte Lipstick</td>
+                        <td>₱350</td>
+                        <td><span class="status">Completed</span></td>
+                        <td><button class="btn">View</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>#ORD-002</td>
+                        <td>Angela Cruz</td>
+                        <td>Liquid Foundation</td>
+                        <td>₱500</td>
+                        <td><span class="status">Processing</span></td>
+                        <td><button class="btn">View</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>#ORD-003</td>
+                        <td>Sofia Reyes</td>
+                        <td>Blush</td>
+                        <td>₱280</td>
+                        <td><span class="status">Completed</span></td>
+                        <td><button class="btn">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

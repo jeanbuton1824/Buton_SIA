@@ -1,0 +1,225 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | Beauty Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fdf7fb;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #d86ba8, #9b59b6);
+            padding: 25px 15px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .sidebar-nav span {
+            width: 25px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px;
+        }
+
+        h1 {
+            color: #7d3c98;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .settings-card {
+            max-width: 750px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .setting {
+            margin-bottom: 25px;
+        }
+
+        .setting label {
+            display: block;
+            font-weight: bold;
+            color: #6c3483;
+            margin-bottom: 8px;
+        }
+
+        .setting input,
+        .setting select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .setting input:focus,
+        .setting select:focus {
+            border-color: #d86ba8;
+        }
+
+        .save-btn {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #d86ba8;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #b95791;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <div class="logo">✨ Beauty Admin</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}">
+                <span>⌂</span> Dashboard
+            </a>
+
+            <a href="{% url 'product_list' %}">
+                <span>👜</span> Products
+            </a>
+
+            <a href="{% url 'orders' %}">
+                <span>▣</span> Orders
+            </a>
+
+            <a href="{% url 'customers' %}">
+                <span>♙</span> Customers
+            </a>
+
+            <a href="{% url 'categories' %}">
+                <span>▦</span> Categories
+            </a>
+
+            <a href="{% url 'reports' %}">
+                <span>▥</span> Reports
+            </a>
+
+            <a href="{% url 'settings' %}" class="active">
+                <span>⚙</span> Settings
+            </a>
+
+        </nav>
+
+        <form class="logout-form" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+        </form>
+    </aside>
+
+    <main class="main">
+
+        <h1>Settings</h1>
+        <p class="subtitle">Manage your beauty store settings.</p>
+
+        <div class="settings-card">
+
+            <div class="setting">
+                <label>Store Name</label>
+                <input type="text" value="Glow Beauty">
+            </div>
+
+            <div class="setting">
+                <label>Store Email</label>
+                <input type="email" value="glowbeauty@email.com">
+            </div>
+
+            <div class="setting">
+                <label>Contact Number</label>
+                <input type="text" value="0912-345-6789">
+            </div>
+
+            <div class="setting">
+                <label>Currency</label>
+                <select>
+                    <option selected>Philippine Peso (₱)</option>
+                    <option>US Dollar ($)</option>
+                    <option>Euro (€)</option>
+                </select>
+            </div>
+
+            <div class="setting">
+                <label>Theme</label>
+                <select>
+                    <option selected>Beauty Pink & Lavender</option>
+                    <option>Light</option>
+                    <option>Dark</option>
+                </select>
+            </div>
+
+            <button class="save-btn">
+                Save Settings
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

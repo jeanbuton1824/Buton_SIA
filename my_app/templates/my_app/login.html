@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | Glow Beauty</title>
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+<body class="auth-page">
+    <main class="auth-card">
+        <a class="auth-brand" href="{% url 'login' %}">
+            <span class="auth-brand-mark">G</span>
+            <span>GLOW <small>BEAUTY INVENTORY</small></span>
+        </a>
+        <div class="auth-eyebrow">YOUR BEAUTY BUSINESS, IN BLOOM</div>
+        <h1>Welcome back</h1>
+        <p class="auth-intro">Sign in to your studio and pick up where you left off.</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-error" role="alert">{{ form.non_field_errors }}</div>
+            {% endif %}
+            <div class="auth-field">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div class="auth-field">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+            {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+            <button class="auth-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">New to Glow? <a href="{% url 'register' %}">Create an account</a></p>
+        <p class="auth-footnote">A softer way to keep your shelves in order.</p>
+    </main>
+</body>
+</html>

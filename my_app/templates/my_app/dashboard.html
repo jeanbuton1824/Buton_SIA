@@ -1,0 +1,522 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Glow Beauty Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'my_app/style.css' %}">
+    <link rel="stylesheet" href="{% static 'my_app/dashboard_theme.css' %}">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-main">Glow</div>
+        <div class="logo-sub">BEAUTY</div>
+    </div>
+
+    <ul class="nav-menu">
+
+        <li>
+            <a href="{% url 'dashboard' %}" class="active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'product_list' %}">
+                <span class="nav-icon">👜</span>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'orders' %}">
+                <span class="nav-icon">▣</span>
+                <span>Orders</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'customers' %}">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'categories' %}">
+                <span class="nav-icon">▦</span>
+                <span>Categories</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'reports' %}">
+                <span class="nav-icon">▥</span>
+                <span>Reports</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'settings' %}">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="sidebar-bottom">
+        <p>
+            Glow with<br>
+            confidence.
+        </p>
+    </div>
+
+    <form class="logout-form" method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sign out <span aria-hidden="true">↗</span></button>
+    </form>
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+        <div class="search-box">
+            <span>⌕</span>
+
+            <input
+                type="text"
+                placeholder="Search products, orders, or customers..."
+            >
+        </div>
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                👩🏻
+            </div>
+
+            <div>
+                <div class="profile-name">
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </div>
+
+                <div class="profile-role">
+                    Account
+                </div>
+            </div>
+
+            <span>⌄</span>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+    <section class="content">
+
+        <!-- WELCOME -->
+        <div class="top-section">
+
+            <div class="welcome">
+
+                <h4>Good Evening,</h4>
+
+                <h1>
+                    {{ request.user.get_short_name|default:request.user.username }}!
+                </h1>
+
+                <p>
+                    Here's what's happening with your Glow Beauty store today.
+                </p>
+
+                <div class="date">
+                    📅 September 30, 2026
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+            <div class="quick-actions">
+
+                <a href="{% url 'product_add' %}"
+                   class="action-card">
+
+                    <div class="action-icon">⊕</div>
+                    Add Product
+
+                </a>
+
+                <a href="{% url 'orders' %}" class="action-card">
+
+                    <div class="action-icon">👜</div>
+                    View Orders
+
+                </a>
+
+                <a href="{% url 'customers' %}" class="action-card">
+
+                    <div class="action-icon">♧</div>
+                    Manage Customers
+
+                </a>
+
+                <a href="{% url 'reports' %}" class="action-card">
+
+                    <div class="action-icon">▥</div>
+                    View Reports
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">👜</div>
+
+                <div class="stat-title">
+                    Total Sales
+                </div>
+
+                <div class="stat-number">
+                    ₱12,480
+                </div>
+
+                <div class="stat-change">
+                    ↑ 12%
+                </div>
+
+                <small>
+                    vs. last week
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">🛒</div>
+
+                <div class="stat-title">
+                    Total Orders
+                </div>
+
+                <div class="stat-number">
+                    48
+                </div>
+
+                <div class="stat-change">
+                    ↑ 8%
+                </div>
+
+                <small>
+                    vs. last week
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">👤</div>
+
+                <div class="stat-title">
+                    Total Customers
+                </div>
+
+                <div class="stat-number">
+                    37
+                </div>
+
+                <div class="stat-change">
+                    ↑ 15%
+                </div>
+
+                <small>
+                    vs. last week
+                </small>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">📦</div>
+
+                <div class="stat-title">
+                    Total Products
+                </div>
+
+                <div class="stat-number">
+                    {{ products.count }}
+                </div>
+
+                <div class="stat-change">
+                    ● Current
+                </div>
+
+                <small>
+                    products in inventory
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- BOTTOM CONTENT -->
+        <div class="bottom-grid">
+
+            <!-- SALES OVERVIEW -->
+            <div class="panel">
+
+                <div class="panel-title">
+
+                    <h2>
+                        Sales Overview
+                    </h2>
+
+                    <select>
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>This Year</option>
+                    </select>
+
+                </div>
+
+
+                <div class="chart">
+
+                    <div class="bar" style="height:35%"></div>
+                    <div class="bar" style="height:55%"></div>
+                    <div class="bar" style="height:42%"></div>
+                    <div class="bar" style="height:62%"></div>
+                    <div class="bar" style="height:78%"></div>
+                    <div class="bar" style="height:82%"></div>
+                    <div class="bar" style="height:100%"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOP PRODUCTS -->
+            <div class="panel">
+
+                <div class="panel-title">
+
+                    <h2>
+                        Top Selling Products
+                    </h2>
+
+                    <a href="{% url 'product_list' %}"
+                       class="view-all">
+                        View All
+                    </a>
+
+                </div>
+
+
+                {% for product in products|slice:":5" %}
+
+                <div class="product-item">
+
+                    <div class="product-image">
+                        💄
+                    </div>
+
+                    <div class="product-info">
+
+                        <strong>
+                            {{ product.name }}
+                        </strong>
+
+                        <small>
+                            {{ product.stock_quantity }} in stock
+                        </small>
+
+                        <div class="progress">
+
+                            <div class="progress">
+    <div class="progress-bar"></div>
+</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <p>
+                    No products available.
+                </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT ORDERS -->
+        <div class="panel" style="margin-top:20px;">
+
+            <div class="panel-title">
+
+                <h2>
+                    Recent Orders
+                </h2>
+
+                <a href="{% url 'product_list' %}" class="view-all">
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="order-item">
+
+                <div class="order-img">
+                    💄
+                </div>
+
+                <div class="order-info">
+
+                    <strong>
+                        Order #GLOW-1024
+                    </strong>
+
+                    <div class="order-price">
+                        ₱650
+                    </div>
+
+                </div>
+
+                <span class="status paid">
+                    Paid
+                </span>
+
+            </div>
+
+
+            <div class="order-item">
+
+                <div class="order-img">
+                    🧴
+                </div>
+
+                <div class="order-info">
+
+                    <strong>
+                        Order #GLOW-1023
+                    </strong>
+
+                    <div class="order-price">
+                        ₱1,250
+                    </div>
+
+                </div>
+
+                <span class="status paid">
+                    Paid
+                </span>
+
+            </div>
+
+
+            <div class="order-item">
+
+                <div class="order-img">
+                    🎨
+                </div>
+
+                <div class="order-info">
+
+                    <strong>
+                        Order #GLOW-1022
+                    </strong>
+
+                    <div class="order-price">
+                        ₱480
+                    </div>
+
+                </div>
+
+                <span class="status pending">
+                    Pending
+                </span>
+
+            </div>
+
+
+            <div class="order-item">
+
+                <div class="order-img">
+                    💋
+                </div>
+
+                <div class="order-info">
+
+                    <strong>
+                        Order #GLOW-1021
+                    </strong>
+
+                    <div class="order-price">
+                        ₱980
+                    </div>
+
+                </div>
+
+                <span class="status shipped">
+                    Shipped
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BEAUTY BANNER -->
+        <div class="beauty-banner">
+
+            <h2>
+                Beauty in every detail
+            </h2>
+
+            <a href="{% url 'product_add' %}"
+               class="shop-button">
+                Add Product →
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>
